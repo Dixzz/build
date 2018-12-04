@@ -175,6 +175,11 @@ include $(BUILD_SYSTEM)/node_fns.mk
 include $(BUILD_SYSTEM)/product.mk
 include $(BUILD_SYSTEM)/device.mk
 
+# A Custom build needs only the AOSP product makefiles.
+ifneq ($(CUSTOM_BUILD),)
+  all_product_configs := $(shell find device -path "*/*/elpida_$(CUSTOM_BUILD).mk")
+else
+
 ifneq ($(strip $(TARGET_BUILD_APPS)),)
 # An unbundled app build needs only the core product makefiles.
 all_product_configs := $(call get-product-makefiles,\
@@ -185,6 +190,7 @@ else
 all_product_configs := $(get-all-product-makefiles)
 endif
 
+ifeq ($(ELPIDA_BUILD),)
 all_named_products :=
 
 # Find the product config makefile for the current product.

@@ -3053,6 +3053,11 @@ ifeq ($(BREAKPAD_GENERATE_SYMBOLS),true)
 	$(hide) $(ACP) -r $(TARGET_OUT_BREAKPAD) $(zip_root)/BREAKPAD
 endif
 	$(hide) echo "ota_override_device=$(OTA_SCRIPT_OVERRIDE_DEVICE)" >> $(zip_root)/META/misc_info.txt
+
+ifneq ($(CUSTOM_BUILD),)
+    $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := true
+else
+
 # BOARD_BUILD_DISABLED_VBMETAIMAGE is used to build a special vbmeta.img
 # that disables AVB verification. The content is fixed and we can just copy
 # it to $(zip_root)/IMAGES without passing some info into misc_info.txt for

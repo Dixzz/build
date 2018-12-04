@@ -13,6 +13,8 @@ BINDER32BIT := true
 endif
 endif
 
+include vendor/elpida/build/soong/soong_config.mk
+
 ifeq ($(WRITE_SOONG_VARIABLES),true)
 # Converts a list to a JSON list.
 # $1: List separator.

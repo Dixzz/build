@@ -1,3 +1,4 @@
+
 # This is included by the top-level Makefile.
 # It sets up standard variables based on the
 # current configuration and platform, which
@@ -194,6 +195,10 @@ ifdef TMPDIR
 JAVA_TMPDIR_ARG := -Djava.io.tmpdir=$(TMPDIR)
 else
 JAVA_TMPDIR_ARG :=
+endif
+
+ifneq ($(CUSTOM_BUILD),)
+include vendor/elpida/config/BoardConfigELPIDA.mk
 endif
 
 # Default to remove the org.apache.http.legacy from bootclasspath

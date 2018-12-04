@@ -40,10 +40,11 @@ function hmm() {
 
     echo
     echo "Look at the source to view more functions. The complete list is:"
-    for i in `cat $T/build/envsetup.sh | sed -n "/^[ \t]*function /s/function \([a-z_]*\).*/\1/p" | sort | uniq`; do
+    for i in `cat $T/build/envsetup.sh $T/vendor/elpida/build/envsetup.sh | sed -n "/^[ \t]*function /s/function \([a-z_]*\).*/\1/p" | sort | uniq`; do
       echo "$i"
     done | column
 }
+
 
 # Get the value of a build variable as an absolute path.
 function get_abs_build_var()
@@ -265,6 +266,20 @@ function printconfig()
         return
     fi
     get_build_var report_config
+    if (echo -n $1 | grep -q -e "^devilian_") ; then
+        CUSTOM_BUILD=$(echo -n $1 | sed -e 's/^elpida_//g')
+        export BUILD_NUMBER=$( (date +%s%N ; echo $CUSTOM_BUILD; hostname) | openssl sha1 | sed -e 's/.*=//g; s/ //g' | cut -c1-10 )
+    else
+        CUSTOM_BUILD=
+    fi
+    export CUSTOM_BUILD
+
+        TARGET_PRODUCT=$1 \
+        TARGET_BUILD_VARIANT= \
+        TARGET_BUILD_TYPE= \
+        TARGET_BUILD_APPS= \
+        get_build_var TARGET_DEVICE > /dev/null
+    # hide successful answers, but allow the errors to show
 }
 
 function set_stuff_for_environment()
